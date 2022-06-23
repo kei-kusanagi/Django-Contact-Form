@@ -31,7 +31,7 @@ def index(request):
     return render(request, 'contact/index.html')
 ```
 
-y luego en /djangocontactform/urls.py registramos su path
+y luego en /djangocontactform/urls.py registramos su path, el que va sin nada es porque es el index y hay que importarlo de cviews con from contact.views
 
 ```
 from django.contrib import admin
@@ -49,3 +49,81 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 ```
 ![[Pasted image 20220622121601.png]]
+
+ahora crearemos nuestra forma para guardar los datos en la base de datos, en /contact/forms.py
+
+```
+from django import forms
+
+class ContactForm(forms.Form):
+
+    name = forms.CharField(max_length=255)
+
+    email = forms.EmailField()
+
+    content = forms.CharField(widget=forms.Textarea)
+```
+
+Salvamos esto y ahora pasamos a /contact/views.py  y agregamos lasiguiente funcion para que nos pueda arrojar ese index y que tambien reciva form
+
+```
+from django.shortcuts import render
+
+from.forms import ContactForm
+
+def index(request):
+
+    form = ContactForm()
+
+    return render(request, 'contact/index.html', {
+
+        'form': form
+
+    })
+```
+
+ahora vamos a nuestro template y escrivimos lo siguiente para mandar a traer nuestra form y se vera asi
+
+```
+<form method="post" action=".">
+
+            {% csrf_token %}
+
+
+            {{ form.as_p }}
+
+            <button>Submit</button>
+
+        </form>
+```
+![[Pasted image 20220622183010.png]]
+
+se ve bonito epro falta al validacion, asi que regresamos a nuestro archivo /contact/views.py y le agregamos los siguientes if's
+
+```
+from django.shortcuts import render
+
+from.forms import ContactForm
+
+def index(request):
+
+    if request.method == 'POST':
+
+        form = ContactForm(request.POST)
+
+
+        if form.is_valid():
+
+            print('the form was valid')
+            return redirect('index')
+
+    else:
+
+        form = ContactForm()
+
+    return render(request, 'contact/index.html', {
+
+        'form': form
+
+    })
+```

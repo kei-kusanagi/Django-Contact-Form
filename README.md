@@ -127,3 +127,141 @@ def index(request):
 
     })
 ```
+
+ahora para hacer una validacion de Email vamos a /djangocontactform/settings.py y ponemos lo siguiente arriba de INSTALLED_APPS
+
+``EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'``
+
+yy en nuestro archivo views.py agregamos el siguiente codigo para establecer el cuerpo del E-mail
+
+```
+from django.core.mail import send_mail
+
+from django.shortcuts import render, redirect
+
+  
+from.forms import ContactForm
+
+def index(request):
+
+    if request.method == 'POST':
+
+        form = ContactForm(request.POST)
+  
+
+        if form.is_valid():
+
+            print('the form was valid')
+  
+
+            send_mail('The contact form subject', 'This is the message', 'noreply@velvetit.com', ['kei.kusanagi.99@gmail.com'])
+
+
+            return redirect('index')
+
+    else:
+
+        form = ContactForm()
+
+    return render(request, 'contact/index.html', {
+
+        'form': form
+
+    })
+```
+
+actualizamos nuestra pagina y llenamos unos datos de prueba
+![[Pasted image 20220622194326.png]]
+
+al darle en Submit nos deve llevar a la pagina de inicio y en la consola nos saldra lo siguiente
+![[Pasted image 20220622200700.png]]
+
+validando que se si se enviaria el correo corespondiente, ahora usaremos html para enviar estos mensajes, para esto vamos a views.py y añadamos lo siguiente dentro de la funcion index
+```
+from django.core.mail import send_mail
+
+from django.shortcuts import render, redirect
+
+from django.template.loader import render_to_string
+
+
+from.forms import ContactForm
+  
+
+def index(request):
+
+    if request.method == 'POST':
+
+        form = ContactForm(request.POST)
+  
+
+        if form.is_valid():
+
+            name = form.cleaned_data['name']
+
+            email = form.cleaned_data['email']
+
+            content = form.cleaned_data['content']
+
+
+            html = render_to_string('contact/emails/contactform.html', {
+
+                'name' : name,
+
+                'email' : email,
+
+                'content' : content
+
+            })
+
+            send_mail('The contact form subject', 'This is the message', 'noreply@velvetit.com', ['kei.kusanagi.99@gmail.com'], html_message=html)
+
+  
+
+            return redirect('index')
+
+    else:
+
+        form = ContactForm()
+
+    return render(request, 'contact/index.html', {
+
+        'form': form
+
+    })
+```
+
+
+
+crearemos una template vacia solo para apuntar alli en /contact/templates/contact/emails/contactform.html
+![[Pasted image 20220622213618.png]]
+
+ahora salvamos y corremos todo nuevamente y llenamos la forma de contacto, y en la terminal nos mostrara hola hola hola si todo funciono...
+
+![[Pasted image 20220622214015.png]]
+Perfecto 😀 ahora podemos quitar ls hola's y agragar una verdadera template para nuestra forma de contacto, vamos entonces a contactform.html y añadamos lo siguiente:
+
+```
+<h2>Contact form submission</h2>
+
+
+<p><b>Name: </b> {{ name }}</p>
+
+<p><b>E-mail: </b> {{ email }}</p>
+
+<p><b>Message: </b> {{ content }}</p>
+```
+
+llenamos nuevamente nuestra forma y la enviamos y deve salir asi:
+![[Pasted image 20220622214415.png]]
+
+Bien parece que todo esta configurado, asi que ahora iremos a www.mailtrap.io y nos registramos para pdoer crear una cuenta gratis y usar su servicio y poder testear nuestra app y el envio de los correos, ya logeados en la configuracion de inbox elejimos Python/Django...
+![[Pasted image 20220622214810.png]]
+copiamos esas cuatro lineas y settings.py remplazamos nuestro ``EMAIL_BACKEND`` con esto
+![[Pasted image 20220622214906.png]]
+
+salvamos y volvemos a enviar nuestra forma de contacto y veamos la magia 📩
+![[Pasted image 20220622215352.png]]
+![[Pasted image 20220622215519.png]]
+
+Y listoooooooooooo no se olviden de suscribirse 🔺 dar like 👍y activar la campanita 🔔... a no cierto, bueno eso es todo 😜

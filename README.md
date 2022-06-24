@@ -12,10 +12,10 @@ damos ``cd djangocontactform`` y dentro creamos nuestra app con
 ``python manage.py startapp contact``
 
 Ya creadoesto podemos seguir en Visual Studio con un ``code .``  (esta bien en este directorio) y se vera mas o menos asi
-!![image](README%20img/Pasted%20image%2020220621224422.png)
+![[Pasted image 20220621224422.png]]
 
 y vamos a settings y en INSTALLED_APPS ponemos nuestra aplicacion 'contact'
-!![image](README%20img/Pasted%20image%2020220622120330.png)
+![[Pasted image 20220622120330.png]]
 
 si corremos esto en nuestro buscador nos dara un error ya que aun no tenemos nuestro template, ais que vamos a crearlo en '/contact/templates/contact/index.html'
 
@@ -48,7 +48,7 @@ urlpatterns = [
 
     path('admin/', admin.site.urls),
 ```
-!![image](README%20img/Pasted%20image%2020220622121601.png)
+![[Pasted image 20220622121601.png]]
 
 ahora crearemos nuestra forma para guardar los datos en la base de datos, en /contact/forms.py
 
@@ -96,7 +96,7 @@ ahora vamos a nuestro template y escrivimos lo siguiente para mandar a traer nue
 
         </form>
 ```
-!![image](README%20img/Pasted%20image%2020220622183010.png)
+![[Pasted image 20220622183010.png]]
 
 se ve bonito epro falta al validacion, asi que regresamos a nuestro archivo /contact/views.py y le agregamos los siguientes if's
 
@@ -171,10 +171,10 @@ def index(request):
 ```
 
 actualizamos nuestra pagina y llenamos unos datos de prueba
-!![image](README%20img/Pasted%20image%2020220622194326.png)
+![[Pasted image 20220622194326.png]]
 
 al darle en Submit nos deve llevar a la pagina de inicio y en la consola nos saldra lo siguiente
-!![image](README%20img/Pasted%20image%2020220622200700.png)
+![[Pasted image 20220622200700.png]]
 
 validando que se si se enviaria el correo corespondiente, ahora usaremos html para enviar estos mensajes, para esto vamos a views.py y añadamos lo siguiente dentro de la funcion index
 ```
@@ -234,11 +234,11 @@ def index(request):
 
 
 crearemos una template vacia solo para apuntar alli en /contact/templates/contact/emails/contactform.html
-!![image](README%20img/Pasted%20image%2020220622213618.png)
+![[Pasted image 20220622213618.png]]
 
 ahora salvamos y corremos todo nuevamente y llenamos la forma de contacto, y en la terminal nos mostrara hola hola hola si todo funciono...
 
-!![image](README%20img/Pasted%20image%2020220622214015.png)
+![[Pasted image 20220622214015.png]]
 Perfecto 😀 ahora podemos quitar ls hola's y agragar una verdadera template para nuestra forma de contacto, vamos entonces a contactform.html y añadamos lo siguiente:
 
 ```
@@ -253,15 +253,15 @@ Perfecto 😀 ahora podemos quitar ls hola's y agragar una verdadera template pa
 ```
 
 llenamos nuevamente nuestra forma y la enviamos y deve salir asi:
-!![image](README%20img/Pasted%20image%2020220622214415.png)
+![[Pasted image 20220622214415.png]]
 
 Bien parece que todo esta configurado, asi que ahora iremos a www.mailtrap.io y nos registramos para pdoer crear una cuenta gratis y usar su servicio y poder testear nuestra app y el envio de los correos, ya logeados en la configuracion de inbox elejimos Python/Django...
-!![image](README%20img/Pasted%20image%2020220622214810.png)
+![[Pasted image 20220622214810.png]]
 copiamos esas cuatro lineas y settings.py remplazamos nuestro ``EMAIL_BACKEND`` con esto
-!![image](README%20img/Pasted%20image%2020220622214906.png)
+![[Pasted image 20220622214906.png]]
 
 salvamos y volvemos a enviar nuestra forma de contacto y veamos la magia 📩
-!![image](README%20img/Pasted%20image%2020220622215352.png)
-!![image](README%20img/Pasted%20image%2020220622215519.png)
+![[Pasted image 20220622215352.png]]
+![[Pasted image 20220622215519.png]]
 
 Y listoooooooooooo no se olviden de suscribirse 🔺 dar like 👍y activar la campanita 🔔... a no cierto, bueno eso es todo 😜
